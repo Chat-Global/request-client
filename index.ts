@@ -1,11 +1,11 @@
 const { io } = require('socket.io-client');
 
-const { uri, auth: authorization, client } = require('./config');
+const { uri, auth: authorization } = require('./config');
 
 const WSClient = io(uri, {
 	auth: {
 		token: authorization,
-		client: client
+		client: 'RequestClient'
 	}
 });
 
