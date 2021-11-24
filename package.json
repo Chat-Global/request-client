@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Chat-Global/request-client#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "socket.io-client": "^4.4.0"
   }
 }

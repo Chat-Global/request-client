@@ -1,5 +1,6 @@
 const { io } = require('socket.io-client');
 const { createServer } = require('http');
+const axios = require('axios');
 
 createServer((req: any, res: any) => res.end('HTTP Server running.')).listen(8080);
 
@@ -26,24 +27,25 @@ WSClient.on('connect', () => {
     );
 });
 
+
 WSClient.on('disconnect', (reason: any) => {
     console.log(
         `[WS REQ] Disconnected from the RequestManager Websocket. (${reason})`
     );
 });
 
-function wsRequest(event: string, data: any) {
-    return new Promise((resolve, reject) => {
-        WSClient.emit(event, data, (resp: any) => {
-            resolve(
-                resp.map((response: any) => {
-                    if (!response.status || response.status != 'success') {
-                        return reject(new Error(response.text));
-                    }
 
-                    return response.response;
-                })
-            );
-        });
-    });
-}
+WSClient.on('request', async (data: any, callback: any) => {
+    const req = await axios(data).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', text: err.toString() }));
+    callback(req);
+});
+
+
+WSClient.on('requests', async (data: any, callback: any) => {
+    const result = [];
+    for (const requestData of data) {
+        const req = await axios(requestData.request).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', text: err.toString() }));
+        result.push(req);
+    }
+    callback(result);
+});
