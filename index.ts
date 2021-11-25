@@ -28,19 +28,16 @@ WSClient.on('connect', () => {
     );
 });
 
-
 WSClient.on('disconnect', (reason: string) => {
     console.log(
         `[WS REQ] Disconnected from the RequestManager Websocket. (${reason})`
     );
 });
 
-
 WSClient.on('request', async (data: any, callback: any) => {
     const req = await axios(data).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', text: err.toString() }));
     callback(req);
 });
-
 
 WSClient.on('requests', async (data: any, callback: any) => {
     const result = [];
@@ -50,7 +47,6 @@ WSClient.on('requests', async (data: any, callback: any) => {
     }
     callback(result);
 });
-
 
 WSClient.on('ping', (callback: any) => {
     callback();
