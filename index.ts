@@ -29,7 +29,7 @@ WSClient.on('connect', () => {
 });
 
 
-WSClient.on('disconnect', (reason: any) => {
+WSClient.on('disconnect', (reason: string) => {
     console.log(
         `[WS REQ] Disconnected from the RequestManager Websocket. (${reason})`
     );
