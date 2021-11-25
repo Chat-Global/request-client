@@ -4,12 +4,13 @@ const axios = require('axios');
 
 createServer((req: any, res: any) => res.end('HTTP Server running.')).listen(8080);
 
-const { uri, auth: authorization } = require('./config');
+const { uri, auth: authorization, client } = require('./config');
 
 const WSClient = io(uri, {
     auth: {
         token: authorization,
-        client: 'RequestClient'
+        client: client,
+        type: 'RequestClient'
     }
 });
 
@@ -48,4 +49,9 @@ WSClient.on('requests', async (data: any, callback: any) => {
         result.push(req);
     }
     callback(result);
+});
+
+
+WSClient.on('ping', (callback: any) => {
+    callback();
 });
