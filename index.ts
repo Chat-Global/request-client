@@ -43,7 +43,7 @@ WSClient.on('requests', async (data: any, callback: any) => {
     const result = [];
     for (const requestData of data) {
         const req = await axios(requestData.request).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', text: err.toString() }));
-        result.push(req);
+        result.push(Object.assign({}, requestData, { result: req }));
     }
     callback(result);
 });
