@@ -36,7 +36,7 @@ WSClient.on('disconnect', (reason: string) => {
 
 WSClient.on('request', async (data: any, callback: any) => {
     const req = await axios(data).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', text: err.toString() }));
-    callback(req);
+    callback(Object.assign({}, data, { result: req }));
 });
 
 WSClient.on('requests', async (data: any, callback: any) => {
