@@ -4,12 +4,15 @@ const axios = require('axios');
 
 createServer((req: any, res: any) => res.end('HTTP Server running.')).listen(8080);
 
-const { uri, auth: authorization, client } = require('./config');
+const config = require('./config');
 
-const WSClient = io(uri, {
+const WSClient = io(config.auth.uri, {
     auth: {
-        token: authorization,
-        client: client,
+        apiKey: config.auth.apiKey,
+        secret: config.auth.secret,
+        token: config.auth.token,
+        clientName: config.client.name,
+        clientID: config.client.id,
         type: 'RequestClient'
     }
 });
