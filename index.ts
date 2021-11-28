@@ -35,14 +35,14 @@ WSClient.on('disconnect', (reason: string) => {
 });
 
 WSClient.on('request', async (data: any, callback: any) => {
-    const req = await axios(data).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', text: err.toString() }));
+    const req = await axios(data).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', response: err }));
     callback(Object.assign({}, data, { result: req }));
 });
 
 WSClient.on('requests', async (data: any, callback: any) => {
     const result = [];
     for (const requestData of data) {
-        const req = await axios(requestData.request).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', text: err.toString() }));
+        const req = await axios(requestData.request).then((res: any) => ({ status: 'success', response: res.data })).catch((err: any) => ({ status: 'error', response: err }));
         result.push(Object.assign({}, requestData, { result: req }));
     }
     callback(result);
